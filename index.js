@@ -22,6 +22,8 @@ async function run(){
         await client.connect();
         const database = client.db("cloothee");  
         const productCollection = database.collection("product");
+        const womenproductCollection = database.collection("womenproduct");
+        const menproductCollection = database.collection("menproduct");
         const blogCollection = database.collection("blog");
         const contactCollection = database.collection("contact");
 
@@ -40,9 +42,42 @@ async function run(){
         });
         app.get('/addProduct/:id', async (req,res)=>{
           const query = { _id: ObjectId(req.params.id) }
-          const product = await productCollection.findOne(query);
-          res.send(product);
+          const products = await productCollection.findOne(query);
+          res.send(products);
       });
+
+
+      app.post('/addwomenProduct', async (req,res)=>{
+        const result = await womenproductCollection.insertOne(req.body);
+        res.send(result);
+        console.log(result);
+      });
+      app.get('/addwomenProduct', async (req,res)=>{
+        const result = await womenproductCollection.find({}).toArray();
+        res.json(result);
+      });
+      app.get('/addwomenProduct/:id', async (req,res)=>{
+        const query = { _id: ObjectId(req.params.id) }
+        const womenproduct = await womenproductCollection.findOne(query);
+        res.send(womenproduct);
+    });
+
+
+    app.post('/addmenProduct', async (req,res)=>{
+      const result = await menproductCollection.insertOne(req.body);
+      res.send(result);
+      console.log(result);
+    });
+    app.get('/addmenProduct', async (req,res)=>{
+      const result = await menproductCollection.find({}).toArray();
+      res.json(result);
+    });
+    app.get('/addmenProduct/:id', async (req,res)=>{
+      const query = { _id: ObjectId(req.params.id) }
+      const menproducts = await menproductCollection.findOne(query);
+      res.send(menproducts);
+  });
+
 
 
        
